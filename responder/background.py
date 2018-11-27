@@ -1,5 +1,9 @@
-import multiprocessing
+import asyncio
+import functools
 import concurrent.futures
+import multiprocessing
+import traceback
+from starlette.concurrency import run_in_threadpool
 
 
 class BackgroundQueue:
@@ -10,7 +14,6 @@ class BackgroundQueue:
         self.n = n
         self.pool = concurrent.futures.ThreadPoolExecutor(max_workers=n)
         self.results = []
-        self.callbacks = []
 
     def run(self, f, *args, **kwargs):
         self.pool._max_workers = self.n
@@ -18,22 +21,24 @@ class BackgroundQueue:
 
         f = self.pool.submit(f, *args, **kwargs)
         self.results.append(f)
+        return f
 
     def task(self, f):
+        def on_future_done(fs):
+            try:
+                fs.result()
+            except:
+                traceback.print_exc()
+
         def do_task(*args, **kwargs):
             result = self.run(f, *args, **kwargs)
-
-            for cb in self.callbacks:
-                result.add_done_callback(cb)
-
+            result.add_done_callback(on_future_done)
             return result
 
         return do_task
 
-    def callback(self, f):
-        self.callbacks.append(f)
-
-        def register_callback():
-            f()
-
-        return register_callback
+    async def __call__(self, func, *args, **kwargs) -> None:
+        if asyncio.iscoroutinefunction(func):
+            return await asyncio.ensure_future(func(*args, **kwargs))
+        else:
+            return await run_in_threadpool(func, *args, **kwargs)

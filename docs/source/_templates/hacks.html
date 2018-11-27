@@ -22,6 +22,7 @@
   }
 
   pre,
+  .pre,
   .class em,
   .descname,
   .method em {
@@ -75,6 +76,11 @@
     display: none;
   }
 
+  #testimonials p.attribution {
+    margin-top: -1em;
+  }
+
+
 
   /* "Quick Search" should be not be shown for now. */
   div#searchbox h3 {
@@ -109,19 +115,13 @@
 </style>
 
 <!-- Analytics tracking for Kenneth. -->
-<script type="text/javascript">
-  var _gauges = _gauges || [];
-  (function () {
-    var t = document.createElement('script');
-    t.type = 'text/javascript';
-    t.async = true;
-    t.id = 'gauges-tracker';
-    t.setAttribute('data-site-id', '588f8e99c88d9013e60fa373');
-    t.setAttribute('data-track-path', 'https://track.gaug.es/track.gif');
-    t.src = 'https://d36ee2fcip1434.cloudfront.net/track.js';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(t, s);
-  })();
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127383416-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-127383416-1');
 </script>
 
 <!-- There are no more hacks. -->

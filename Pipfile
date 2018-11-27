@@ -5,9 +5,6 @@ name = "pypi"
 
 [packages]
 responder = {editable = true, path = "."}
-uvicorn = "*"
-starlette = "*"
-aiofiles = "*"
 
 [dev-packages]
 pytest = "*"
@@ -16,8 +13,8 @@ black = "*"
 twine = "*"
 flask = "*"
 sphinx = "*"
-locust = "*"
-locustio = "*"
+marshmallow = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"

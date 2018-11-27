@@ -22,7 +22,7 @@ if sys.argv[-1] == "publish":
     sys.exit()
 
 required = [
-    "starlette",
+    "starlette<0.9",
     "uvicorn",
     "aiofiles",
     "pyyaml",
@@ -33,6 +33,16 @@ required = [
     "parse",
     "uvloop ; sys_platform != 'win32'",
     "rfc3986",
+    "python-multipart",
+    "chardet",
+    "apispec>=1.0.0b1",
+    "marshmallow",
+    "asgiref",
+    "whitenoise",
+    "docopt",
+    "itsdangerous",
+    "requests-toolbelt",
+    "apistar",
 ]
 
 
@@ -60,7 +70,7 @@ class DebCommand(Command):
             rmtree(os.path.join(here, "deb_dist"))
         except FileNotFoundError:
             pass
-        self.status(u"Creating debian mainfest…")
+        self.status(u"Creating debian manifest…")
         os.system(
             "python setup.py --command-packages=stdeb.command sdist_dsc -z artful --package3=pipenv --depends3=python3-virtualenv-clone"
         )
@@ -112,9 +122,7 @@ setup(
     author_email="me@kennethreitz.org",
     url="https://github.com/kennethreitz/responder",
     packages=find_packages(exclude=["tests"]),
-    # entry_points={
-    #     "console_scripts": ["pipenv=pipenv:cli", "pipenv-resolver=pipenv.resolver:main"]
-    # },
+    entry_points={"console_scripts": ["responder=responder.cli:cli"]},
     package_data={
         # "": ["LICENSE", "NOTICES"],
         #     "pipenv.vendor.requests": ["*.pem"],
@@ -137,7 +145,7 @@ setup(
     include_package_data=True,
     license="Apache 2.0",
     classifiers=[
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
